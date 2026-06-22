@@ -6,7 +6,6 @@ import {
   cacheAdditionalProcessors,
   serveShareTarget,
 } from './util';
-import { get } from 'idb-keyval';
 import { shouldCacheDynamically } from './to-cache';
 
 // Give TypeScript the correct global.
@@ -19,15 +18,12 @@ const expectedCaches = [versionedCache, dynamicCache];
 self.addEventListener('install', (event) => {
   event.waitUntil(
     (async function () {
-      const promises = [];
-      promises.push(cacheBasics(versionedCache));
-
-      // If the user has already interacted with the app, update the codecs too.
-      if (await get('user-interacted')) {
-        promises.push(cacheAdditionalProcessors(versionedCache));
-      }
-
-      await Promise.all(promises);
+      // The offline-ready signal is only truthful if the UI, workers, codecs,
+      // and WASM processors are all available before activation completes.
+      await Promise.all([
+        cacheBasics(versionedCache),
+        cacheAdditionalProcessors(versionedCache),
+      ]);
     })(),
   );
 });

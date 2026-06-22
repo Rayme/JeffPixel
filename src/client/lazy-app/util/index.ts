@@ -146,7 +146,13 @@ export async function builtinDecode(
     signal,
     'createImageBitmap' in self ? createImageBitmap(blob) : blobToImg(blob),
   );
-  return drawableToImageData(drawable);
+  try {
+    return drawableToImageData(drawable);
+  } finally {
+    // Large camera images can occupy hundreds of MB once decoded. ImageBitmap
+    // keeps that native allocation alive until close() or a later GC cycle.
+    if ('close' in drawable) drawable.close();
+  }
 }
 
 /**

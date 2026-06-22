@@ -1,15 +1,7 @@
+// Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
 import type { WorkerResizeOptions } from '../shared/meta';
 import { getContainOffsets } from '../shared/util';
 import initResizeWasm, { resize as wasmResize } from 'codecs/resize/pkg';
-import initHqxWasm, { resize as wasmHqx } from 'codecs/hqx/pkg';
-
-interface HqxResizeOptions extends WorkerResizeOptions {
-  method: 'hqx';
-}
-
-function optsIsHqxOpts(opts: WorkerResizeOptions): opts is HqxResizeOptions {
-  return opts.method === 'hqx';
-}
 
 function crop(
   data: ImageData,
@@ -33,18 +25,6 @@ function crop(
   );
 }
 
-interface ClampOpts {
-  min?: number;
-  max?: number;
-}
-
-function clamp(
-  num: number,
-  { min = Number.MIN_VALUE, max = Number.MAX_VALUE }: ClampOpts,
-): number {
-  return Math.min(Math.max(num, min), max);
-}
-
 /** Resize methods by index */
 const resizeMethods: WorkerResizeOptions['method'][] = [
   'triangle',
@@ -54,39 +34,6 @@ const resizeMethods: WorkerResizeOptions['method'][] = [
 ];
 
 let resizeWasmReady: Promise<unknown>;
-let hqxWasmReady: Promise<unknown>;
-
-async function hqx(
-  input: ImageData,
-  opts: HqxResizeOptions,
-): Promise<ImageData> {
-  if (!hqxWasmReady) {
-    hqxWasmReady = initHqxWasm();
-  }
-
-  await hqxWasmReady;
-
-  const widthRatio = opts.width / input.width;
-  const heightRatio = opts.height / input.height;
-  const ratio = Math.max(widthRatio, heightRatio);
-  const factor = clamp(Math.ceil(ratio), { min: 1, max: 4 }) as 1 | 2 | 3 | 4;
-
-  if (factor === 1) return input;
-
-  const result = wasmHqx(
-    new Uint32Array(input.data.buffer),
-    input.width,
-    input.height,
-    factor,
-  );
-
-  return new ImageData(
-    new Uint8ClampedArray(result.buffer),
-    input.width * factor,
-    input.height * factor,
-  );
-}
-
 export default async function resize(
   data: ImageData,
   opts: WorkerResizeOptions,
@@ -95,12 +42,6 @@ export default async function resize(
 
   if (!resizeWasmReady) {
     resizeWasmReady = initResizeWasm();
-  }
-
-  if (optsIsHqxOpts(opts)) {
-    input = await hqx(input, opts);
-    // Regular resize to make up the difference
-    opts = { ...opts, method: 'catrom' };
   }
 
   await resizeWasmReady;

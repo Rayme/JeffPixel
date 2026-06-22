@@ -84,7 +84,12 @@ export function drawableToImageData(
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('Could not create canvas context');
   ctx.drawImage(drawable, sx, sy, sw, sh, 0, 0, width, height);
-  return ctx.getImageData(0, 0, width, height);
+  const imageData = ctx.getImageData(0, 0, width, height);
+  // Release the canvas backing store immediately. At 6000x4000 this avoids
+  // retaining another ~96 MB until the browser decides to collect it.
+  canvas.width = 0;
+  canvas.height = 0;
+  return imageData;
 }
 
 export type BuiltinResizeMethod = 'pixelated' | 'low' | 'medium' | 'high';

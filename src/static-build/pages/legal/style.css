@@ -1,0 +1,132 @@
+:global(*) {
+  box-sizing: border-box;
+}
+:global(html) {
+  background: #fff;
+  color: #293241;
+}
+:global(body) {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+}
+
+.page {
+  min-height: 100vh;
+  background: radial-gradient(
+      circle at 78% 10%,
+      rgba(152, 193, 217, 0.22),
+      transparent 26%
+    ),
+    #fff;
+}
+.nav {
+  height: 72px;
+  padding: 0 clamp(22px, 6vw, 80px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(152, 193, 217, 0.34);
+}
+.brand {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 650;
+  letter-spacing: -0.04em;
+}
+.brand img {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  object-fit: contain;
+  transform: scale(1.85);
+}
+.back {
+  color: #475671;
+  text-decoration: none;
+  font-size: 12px;
+}
+.article {
+  width: min(760px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 72px 0 100px;
+}
+.eyebrow {
+  color: #475671;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+.article h1 {
+  margin: 14px 0 10px;
+  font: 650 clamp(42px, 7vw, 72px) / 1.04 -apple-system, BlinkMacSystemFont,
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC',
+    sans-serif;
+  letter-spacing: -0.055em;
+}
+.updated {
+  margin: 0 0 52px;
+  color: rgba(71, 86, 113, 0.72);
+  font-size: 11px;
+}
+.notice {
+  margin: 0 0 34px;
+  padding: 18px 20px;
+  border-left: 3px solid #98c1d9;
+  border-radius: 0 12px 12px 0;
+  color: #475671;
+  background: rgba(152, 193, 217, 0.14);
+  font-size: 12px;
+  line-height: 1.8;
+}
+.section {
+  margin-top: 38px;
+}
+.section h2 {
+  margin: 0 0 12px;
+  font: 650 23px/1.2 -apple-system, BlinkMacSystemFont, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+  letter-spacing: -0.025em;
+}
+.section p,
+.section li {
+  color: #475671;
+  font-size: 13px;
+  line-height: 1.85;
+}
+.section ul {
+  padding-left: 20px;
+}
+.section a {
+  color: #475671;
+}
+.meta {
+  padding: 16px 18px;
+  border: 1px solid rgba(152, 193, 217, 0.34);
+  border-radius: 12px;
+  background: rgba(152, 193, 217, 0.08);
+}
+.footer {
+  padding: 24px clamp(22px, 6vw, 80px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-top: 1px solid rgba(152, 193, 217, 0.34);
+  color: rgba(71, 86, 113, 0.72);
+  font-size: 10px;
+}
+.footer a {
+  color: inherit;
+}
+
+@media (max-width: 600px) {
+  .article {
+    padding-top: 44px;
+  }
+  .article h1 {
+    font-size: 44px;
+  }
+}

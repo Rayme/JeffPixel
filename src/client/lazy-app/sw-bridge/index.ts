@@ -68,7 +68,7 @@ export async function offliner(showSnack: SnackBarElement['showSnackbar']) {
   navigator.serviceWorker.addEventListener('controllerchange', async () => {
     // Is it the first install?
     if (!hasController) {
-      showSnack('Ready to work offline', { timeout: 5000 });
+      showSnack('已可完整离线使用', { timeout: 5000 });
       return;
     }
 

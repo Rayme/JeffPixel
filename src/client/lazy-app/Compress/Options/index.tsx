@@ -1,3 +1,4 @@
+// Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
 import { h, Component } from 'preact';
 
 import * as style from './style.css';
@@ -15,7 +16,6 @@ import {
 import Expander from './Expander';
 import Toggle from './Toggle';
 import Select from './Select';
-import { Options as QuantOptionsComponent } from 'features/processors/quantize/client';
 import { Options as ResizeOptionsComponent } from 'features/processors/resize/client';
 import { ImportIcon, SaveIcon, SwapIcon } from 'client/lazy-app/icons';
 
@@ -44,22 +44,7 @@ type PartialButNotUndefined<T> = {
 };
 
 const supportedEncoderMapP: Promise<PartialButNotUndefined<typeof encoderMap>> =
-  (async () => {
-    const supportedEncoderMap: PartialButNotUndefined<typeof encoderMap> = {
-      ...encoderMap,
-    };
-
-    // Filter out entries where the feature test fails
-    await Promise.all(
-      Object.entries(encoderMap).map(async ([encoderName, details]) => {
-        if ('featureTest' in details && !(await details.featureTest())) {
-          delete supportedEncoderMap[encoderName as keyof typeof encoderMap];
-        }
-      }),
-    );
-
-    return supportedEncoderMap;
-  })();
+  Promise.resolve({ ...encoderMap });
 
 export default class Options extends Component<Props, State> {
   state: State = {
@@ -114,13 +99,6 @@ export default class Options extends Component<Props, State> {
     this.props.onProcessorOptionsChange(
       this.props.index,
       cleanSet(this.props.processorState, `${processor}.enabled`, el.checked),
-    );
-  };
-
-  private onQuantizerOptionsChange = (opts: ProcessorOptions['quantize']) => {
-    this.props.onProcessorOptionsChange(
-      this.props.index,
-      cleanMerge(this.props.processorState, 'quantize', opts),
     );
   };
 
@@ -224,23 +202,6 @@ export default class Options extends Component<Props, State> {
                     inputHeight={source ? source.preprocessed.height : 1}
                     options={processorState.resize}
                     onChange={this.onResizeOptionsChange}
-                  />
-                ) : null}
-              </Expander>
-
-              <label class={style.sectionEnabler}>
-                Reduce palette
-                <Toggle
-                  name="quantize.enable"
-                  checked={!!processorState.quantize.enabled}
-                  onChange={this.onProcessorEnabledChange}
-                />
-              </label>
-              <Expander>
-                {processorState.quantize.enabled ? (
-                  <QuantOptionsComponent
-                    options={processorState.quantize}
-                    onChange={this.onQuantizerOptionsChange}
                   />
                 ) : null}
               </Expander>

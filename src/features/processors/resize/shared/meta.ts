@@ -1,3 +1,4 @@
+// Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
 /**
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,19 +17,13 @@ type BrowserResizeMethods =
   | 'browser-low'
   | 'browser-medium'
   | 'browser-high';
-type WorkerResizeMethods =
-  | 'triangle'
-  | 'catrom'
-  | 'mitchell'
-  | 'lanczos3'
-  | 'hqx';
+type WorkerResizeMethods = 'triangle' | 'catrom' | 'mitchell' | 'lanczos3';
 
 export const workerResizeMethods: WorkerResizeMethods[] = [
   'triangle',
   'catrom',
   'mitchell',
   'lanczos3',
-  'hqx',
 ];
 
 export type Options =

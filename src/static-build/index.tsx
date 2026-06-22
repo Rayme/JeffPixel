@@ -1,3 +1,4 @@
+// Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
 /**
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +15,11 @@ import { h } from 'preact';
 
 import { renderPage, writeFiles } from './utils';
 import IndexPage from './pages/index';
-import * as iconLargeMaskable from 'img-url:static-build/assets/icon-large-maskable.png';
-import * as iconLarge from 'img-url:static-build/assets/icon-large.png';
-import * as screenshot1 from 'img-url:static-build/assets/screenshot1.png';
-import * as screenshot2 from 'img-url:static-build/assets/screenshot2.jpg';
-import * as screenshot3 from 'img-url:static-build/assets/screenshot3.jpg';
-import * as screenshot4 from 'img-url:static-build/assets/screenshot4.png';
-import * as screenshot5 from 'img-url:static-build/assets/screenshot5.jpg';
-import * as screenshot6 from 'img-url:static-build/assets/screenshot6.jpg';
+import LegalPage from './pages/legal';
+import * as iconLarge from 'img-url:static-build/assets/verypixel-logo.webp';
 import dedent from 'dedent';
 import { lookup as lookupMime } from 'mime-types';
+import { readFileSync } from 'fs';
 
 interface Dimensions {
   width: number;
@@ -31,37 +27,40 @@ interface Dimensions {
 }
 
 const manifestSize = ({ width, height }: Dimensions) => `${width}x${height}`;
-const formFactor = ({ width, height }: Dimensions) =>
-  width > height ? 'wide' : 'narrow';
-
-const screenshots = [
-  screenshot1,
-  screenshot2,
-  screenshot3,
-  screenshot4,
-  screenshot5,
-  screenshot6,
-].map((screenshot) => ({
-  src: screenshot.default,
-  type: lookupMime(screenshot.default),
-  sizes: manifestSize(screenshot),
-  form_factor: formFactor(screenshot),
-}));
-
 interface Output {
   [outputPath: string]: string;
 }
 
 const toOutput: Output = {
   'index.html': renderPage(<IndexPage />),
+  'privacy/index.html': renderPage(<LegalPage kind="privacy" />),
+  'terms/index.html': renderPage(<LegalPage kind="terms" />),
+  'open-source/index.html': renderPage(<LegalPage kind="open-source" />),
+  'licenses/VeryPixel-License.txt': readFileSync('LICENSE', 'utf8'),
+  'licenses/Apache-2.0.txt': readFileSync('LICENSES/Apache-2.0.txt', 'utf8'),
+  'licenses/AGPL-3.0.txt': readFileSync('LICENSES/AGPL-3.0.txt', 'utf8'),
+  'licenses/VeryPixel-NOTICE.txt': readFileSync('NOTICE', 'utf8'),
+  'licenses/MODIFICATIONS.txt': readFileSync('MODIFICATIONS.md', 'utf8'),
+  'licenses/mozjpeg.txt': readFileSync(
+    'codecs/mozjpeg/LICENSE.codec.md',
+    'utf8',
+  ),
+  'licenses/webp.txt': readFileSync('codecs/webp/LICENSE.codec.md', 'utf8'),
+  'licenses/resize.txt': readFileSync('codecs/resize/LICENSE.codec.md', 'utf8'),
+  'licenses/preact.txt': readFileSync('node_modules/preact/LICENSE', 'utf8'),
+  'licenses/linkstate.txt': readFileSync(
+    'node_modules/linkstate/LICENSE.md',
+    'utf8',
+  ),
+  'licenses/fflate.txt': readFileSync('node_modules/fflate/LICENSE', 'utf8'),
   'manifest.json': JSON.stringify({
-    name: 'Squoosh',
-    short_name: 'Squoosh',
+    name: 'VeryPixel',
+    short_name: 'VeryPixel',
     start_url: '/?utm_medium=PWA&utm_source=launcher',
     display: 'standalone',
     orientation: 'any',
     background_color: '#fff',
-    theme_color: '#ff3385',
+    theme_color: '#98c1d9',
     icons: [
       {
         src: iconLarge.default,
@@ -69,17 +68,15 @@ const toOutput: Output = {
         sizes: manifestSize(iconLarge),
       },
       {
-        src: iconLargeMaskable.default,
-        type: lookupMime(iconLargeMaskable.default),
-        sizes: manifestSize(iconLargeMaskable),
+        src: iconLarge.default,
+        type: lookupMime(iconLarge.default),
+        sizes: manifestSize(iconLarge),
         purpose: 'maskable',
       },
     ],
-    description:
-      'Compress and compare images with different codecs, right in your browser.',
-    lang: 'en',
+    description: 'Batch-compress and convert images privately in your browser.',
+    lang: 'zh-CN',
     categories: ['photo', 'productivity', 'utilities'],
-    screenshots,
     share_target: {
       action: '/?utm_medium=PWA&utm_source=share-target&share-target',
       method: 'POST',

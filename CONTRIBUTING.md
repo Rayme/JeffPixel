@@ -1,23 +1,20 @@
-# How to Contribute
+# Contributing to VeryPixel
 
-We'd love to accept your patches and contributions to this project. There are
-just a few small guidelines you need to follow.
+感谢你对 VeryPixel 的关注。欢迎通过 GitHub Issue 报告问题、提出功能建议，或提交 Pull Request。
 
-## Contributor License Agreement
+## 提交代码前
 
-Contributions to this project must be accompanied by a Contributor License
-Agreement. You (or your employer) retain the copyright to your contribution,
-this simply gives us permission to use and redistribute your contributions as
-part of the project. Head over to <https://cla.developers.google.com/> to see
-your current agreements on file or to sign a new one.
+1. 请先确认问题尚未被现有 Issue 覆盖。
+2. 功能变更应保持图片在浏览器本地处理，不得默认上传用户图片。
+3. 不要提交密钥、服务器配置、访问日志、真实用户图片或其他敏感数据。
+4. 运行 `npm ci` 安装依赖，并使用 `npm run build` 验证生产构建。
+5. 涉及第三方代码或素材时，请说明来源并确保其许可证与本项目兼容。
 
-You generally only need to submit a CLA once, so if you've already submitted one
-(even if it was for a different project), you probably don't need to do it
-again.
+## Pull Request
 
-## Code reviews
+- 一个 Pull Request 尽量只解决一个明确问题。
+- 描述修改目的、实现方式和验证步骤。
+- UI 变更建议附上桌面端与移动端截图。
+- 提交贡献即表示你有权提供相关代码，并同意将属于你的新增代码和修改按照 AGPL-3.0-only 分发；上游及第三方代码仍遵循各自许可证。
 
-All submissions, including submissions by project members, require review. We
-use GitHub pull requests for this purpose. Consult
-[GitHub Help](https://help.github.com/articles/about-pull-requests/) for more
-information on using pull requests.
+项目维护者可能根据范围、兼容性、安全、隐私和维护成本决定是否合并贡献。

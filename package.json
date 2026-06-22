@@ -1,8 +1,16 @@
 {
   "private": true,
-  "name": "squoosh",
+  "name": "verypixel",
   "version": "2.0.0",
-  "license": "apache-2.0",
+  "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://pixel.veryjack.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/very-jack/VeryPixel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/very-jack/VeryPixel/issues"
+  },
   "scripts": {
     "build": "rollup -c && node lib/move-output.js",
     "debug": "node --inspect-brk node_modules/.bin/rollup -c",
@@ -53,5 +61,8 @@
     "*.{js,css,json,md,ts,tsx}": "prettier --write",
     "*.{c,h,cpp,hpp}": "clang-format -i",
     "*.rs": "rustfmt"
+  },
+  "dependencies": {
+    "fflate": "^0.8.2"
   }
 }

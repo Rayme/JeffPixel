@@ -1,3 +1,4 @@
+// Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
 /**
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,30 +18,10 @@ const root = document.getElementById('app') as HTMLElement;
 
 async function main() {
   if (!__PRODUCTION__) await import('preact/debug');
+  // The static build prerenders the landing page. Clear it before mounting the
+  // interactive app so controls and accessibility nodes are not duplicated.
+  root.textContent = '';
   render(<App />, root);
 }
 
 main();
-
-// Analytics
-{
-  // Determine the current display mode.
-  const displayMode =
-    navigator.standalone ||
-    window.matchMedia('(display-mode: standalone)').matches
-      ? 'standalone'
-      : 'browser';
-
-  // Setup analytics
-  window.ga = window.ga || ((...args) => (ga.q = ga.q || []).push(args));
-  ga('create', 'UA-128752250-1', 'auto');
-  ga('set', 'transport', 'beacon');
-  ga('set', 'dimension1', displayMode);
-  ga('send', 'pageview', '/index.html', { title: 'Squoosh' });
-  // Load the GA script without keeping the browser spinner going.
-  addEventListener('load', () => {
-    const script = document.createElement('script');
-    script.src = 'https://www.google-analytics.com/analytics.js';
-    document.head.appendChild(script);
-  });
-}

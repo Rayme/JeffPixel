@@ -1,0 +1,23 @@
+VeryPixel
+Copyright 2026 阿杰 and VeryPixel contributors
+https://github.com/very-jack/VeryPixel
+
+This product is derived from Squoosh:
+https://github.com/GoogleChromeLabs/squoosh
+Copyright 2020 Google Inc.
+Licensed under the Apache License, Version 2.0.
+
+VeryPixel is an independent project and is not affiliated with, sponsored by,
+or endorsed by Google, Google Chrome, or the Squoosh maintainers.
+
+The 2026 modifications include a new VeryPixel brand and interface, batch
+processing, shared compression settings, proportional bounding-box resize,
+format pruning, output filename changes, legal pages, offline support, and
+removal of unused codecs. See MODIFICATIONS.md.
+
+This software is based in part on the work of the Independent JPEG Group.
+Additional third-party license texts are provided in the licenses directory.
+
+VeryPixel original code and copyrightable modifications are licensed under
+AGPL-3.0-only. VeryPixel brand assets are excluded from the software licenses;
+see the repository root LICENSE for scope and conditions.

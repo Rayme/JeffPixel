@@ -1,3 +1,4 @@
+// Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
 /**
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +16,8 @@ import { h, FunctionalComponent } from 'preact';
 import baseCss from 'css:./base.css';
 import initialCss from 'initial-css:';
 import { allSrc } from 'client-bundle:client/initial-app';
-import favicon from 'url:static-build/assets/favicon.ico';
-import ogImage from 'url:static-build/assets/icon-large-maskable.png';
+import favicon from 'url:static-build/assets/verypixel-logo.webp';
+import ogImage from 'url:static-build/assets/verypixel-logo.webp';
 import { escapeStyleScriptContent, siteOrigin } from 'static-build/utils';
 import Intro from 'shared/prerendered-app/Intro';
 import snackbarCss from 'css:../../../shared/custom-els/snack-bar/styles.css';
@@ -25,32 +26,32 @@ import * as snackbarStyle from '../../../shared/custom-els/snack-bar/styles.css'
 interface Props {}
 
 const Index: FunctionalComponent<Props> = () => (
-  <html lang="en">
+  <html lang="zh-CN">
     <head>
-      <title>Squoosh</title>
+      <meta charSet="utf-8" />
+      <title>VeryPixel — Batch image compression</title>
       <meta
         name="description"
-        content="Squoosh is the ultimate image optimizer that allows you to compress and compare images with different codecs in your browser."
+        content="Private batch image compression and conversion, processed locally in your browser."
       />
       <meta name="twitter:card" content="summary" />
-      <meta name="twitter:site" content="@SquooshApp" />
-      <meta property="og:title" content="Squoosh" />
+      <meta property="og:title" content="VeryPixel" />
       <meta property="og:type" content="website" />
       <meta property="og:image" content={`${siteOrigin}${ogImage}`} />
       <meta
         property="og:image:secure_url"
         content={`${siteOrigin}${ogImage}`}
       />
-      <meta property="og:image:type" content="image/png" />
-      <meta property="og:image:width" content="500" />
-      <meta property="og:image:height" content="500" />
+      <meta property="og:image:type" content="image/webp" />
+      <meta property="og:image:width" content="1254" />
+      <meta property="og:image:height" content="1254" />
       <meta
         property="og:image:alt"
-        content="A cartoon of a hand squeezing an image file on a dark background."
+        content="VeryPixel image compression workspace."
       />
       <meta
         name="og:description"
-        content="Squoosh is the ultimate image optimizer that allows you to compress and compare images with different codecs in your browser."
+        content="Private batch image compression and conversion, processed locally in your browser."
       />
       <meta
         name="viewport"
@@ -58,11 +59,16 @@ const Index: FunctionalComponent<Props> = () => (
       />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
-      <link rel="shortcut icon" href={favicon} />
+      <link rel="icon" type="image/webp" href={favicon} />
       <link rel="apple-touch-icon" href={ogImage} />
-      <meta name="theme-color" content="#ff3385" />
+      <meta name="theme-color" content="#98c1d9" />
       <link rel="manifest" href="/manifest.json" />
       <link rel="canonical" href={siteOrigin} />
+      <script
+        defer
+        src="https://umami.veryjack.com/script.js"
+        data-website-id="1f8a1944-ed9d-4ba9-9533-974bada58a47"
+      />
       <style
         dangerouslySetInnerHTML={{ __html: escapeStyleScriptContent(baseCss) }}
       />

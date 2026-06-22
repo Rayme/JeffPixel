@@ -1,3 +1,4 @@
+// Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
 import {
   builtinResize,
   BuiltinResizeMethod,
@@ -243,7 +244,6 @@ export class Options extends Component<Props, State> {
             <option value="mitchell">Mitchell</option>
             <option value="catrom">Catmull-Rom</option>
             <option value="triangle">Triangle (bilinear)</option>
-            <option value="hqx">hqx (pixel art)</option>
             <option value="browser-pixelated">Browser pixelated</option>
             <option value="browser-low">Browser low quality</option>
             <option value="browser-medium">Browser medium quality</option>

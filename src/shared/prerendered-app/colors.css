@@ -1,4 +1,14 @@
+/* Modified by the VeryPixel project in 2026; see MODIFICATIONS.md. */
 html {
+  --ink: #293241;
+  --muted: #475671;
+  --accent: #98c1d9;
+  --accent-deep: #475671;
+  --surface: #ffffff;
+  --surface-soft: #f7fbfd;
+  --line: rgba(152, 193, 217, 0.38);
+  --font-sans: -apple-system, BlinkMacSystemFont, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
   --pink: #ff3385;
   --hot-pink: #ff0066;
   --white: #fff;

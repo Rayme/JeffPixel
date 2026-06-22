@@ -1,16 +1,16 @@
-# Codecs
+# Codecs used by VeryPixel
 
-This folder contains a self-contained sub-project for each encoder and decoder that squoosh supplies.
+This directory contains only the codec and image-processing modules required by
+the current VeryPixel production build:
 
-## Build
+- `mozjpeg` — MozJPEG encoding;
+- `webp` — WebP encoding, including the SIMD build;
+- `resize` — proportional image resizing;
+- `rotate` — EXIF-orientation correction.
 
-Each subproject can be built using [Docker](https://www.docker.com/) the following commands:
+Browser JPEG and Browser PNG use the browser's native canvas encoder and do not
+require a separate codec directory.
 
-```
-$ npm install
-$ npm run build
-```
-
-This will build two files: `<codec name>_<enc or dec>.js` and `<codec name>_<enc or dec>.wasm`. It will most likely be necessary to set [`Module["locateFile"]`](https://kripken.github.io/emscripten-site/docs/api_reference/module.html#affecting-execution) to successfully load the `.wasm` file. When the `.js` file is loaded, a global `<codec name>_<enc or dec>` is created with the same API as an [Emscripten `Module`](https://kripken.github.io/emscripten-site/docs/api_reference/module.html).
-
-Each codec will document its API in its README.
+Each bundled module retains its upstream license and build files. Unused
+Squoosh codecs are intentionally excluded to keep the repository, production
+bundle, and license surface focused on the features VeryPixel actually ships.

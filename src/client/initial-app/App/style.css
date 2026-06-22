@@ -1,3 +1,4 @@
+/* Modified by the VeryPixel project in 2026; see MODIFICATIONS.md. */
 .app {
   position: absolute;
   left: 0;
@@ -10,7 +11,7 @@
 
 .drop {
   overflow: hidden;
-  touch-action: none;
+  touch-action: manipulation;
   height: 100%;
   width: 100%;
 
@@ -19,14 +20,11 @@
       content: '';
       position: absolute;
       display: block;
-      left: 10px;
-      top: 10px;
-      right: 10px;
-      bottom: 10px;
-      border: 2px dashed #fff;
-      background-color: rgba(0, 0, 0, 0.1);
-      border-color: var(--pink);
-      border-radius: 10px;
+      inset: 18px;
+      border: 2px dashed var(--accent);
+      background-color: rgba(152, 193, 217, 0.16);
+      border-radius: 28px;
+      z-index: 100;
       opacity: 0;
       transform: scale(0.95);
       transition: all 200ms ease-in;

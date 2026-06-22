@@ -1,3 +1,4 @@
+// Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
 import type { FileDropEvent } from 'file-drop-element';
 import type SnackBarElement from 'shared/custom-els/snack-bar';
 import type { SnackOptions } from 'shared/custom-els/snack-bar';
@@ -25,7 +26,7 @@ interface Props {}
 
 interface State {
   awaitingShareTarget: boolean;
-  file?: File;
+  files: File[];
   isEditorOpen: Boolean;
   Compress?: typeof import('client/lazy-app/Compress').default;
 }
@@ -36,7 +37,7 @@ export default class App extends Component<Props, State> {
       'share-target',
     ),
     isEditorOpen: false,
-    file: undefined,
+    files: [],
     Compress: undefined,
   };
 
@@ -60,7 +61,7 @@ export default class App extends Component<Props, State> {
       // Remove the ?share-target from the URL
       history.replaceState('', '', '/');
       this.openEditor();
-      this.setState({ file, awaitingShareTarget: false });
+      this.setState({ files: file ? [file] : [], awaitingShareTarget: false });
     });
 
     // Since iOS 10, Apple tries to prevent disabling pinch-zoom. This is great in theory, but
@@ -76,14 +77,21 @@ export default class App extends Component<Props, State> {
 
   private onFileDrop = ({ files }: FileDropEvent) => {
     if (!files || files.length === 0) return;
-    const file = files[0];
+    const imageFiles = Array.from(files).filter((file) =>
+      file.type.startsWith('image/'),
+    );
+    if (!imageFiles.length) return;
     this.openEditor();
-    this.setState({ file });
+    this.setState((state) => ({ files: [...state.files, ...imageFiles] }));
   };
 
-  private onIntroPickFile = (file: File) => {
+  private onIntroPickFile = (files: File[]) => {
     this.openEditor();
-    this.setState({ file });
+    this.setState({ files });
+  };
+
+  private clearFiles = () => {
+    this.setState({ files: [] });
   };
 
   private showSnack = (
@@ -109,18 +117,28 @@ export default class App extends Component<Props, State> {
 
   render(
     {}: Props,
-    { file, isEditorOpen, Compress, awaitingShareTarget }: State,
+    { files, isEditorOpen, Compress, awaitingShareTarget }: State,
   ) {
     const showSpinner = awaitingShareTarget || (isEditorOpen && !Compress);
 
     return (
       <div class={style.app}>
-        <file-drop onfiledrop={this.onFileDrop} class={style.drop}>
+        <file-drop
+          onfiledrop={this.onFileDrop}
+          class={style.drop}
+          accept="image/*"
+          multiple
+        >
           {showSpinner ? (
             <loading-spinner class={style.appLoader} />
           ) : isEditorOpen ? (
             Compress && (
-              <Compress file={file!} showSnack={this.showSnack} onBack={back} />
+              <Compress
+                files={files}
+                showSnack={this.showSnack}
+                onBack={back}
+                onClear={this.clearFiles}
+              />
             )
           ) : (
             <Intro onFile={this.onIntroPickFile} showSnack={this.showSnack} />

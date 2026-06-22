@@ -1,36 +1,27 @@
 ---
-name: Bug report
-about: Something is not working as expected
-labels: 
-
+name: Bug 报告
+about: 报告可以稳定复现的问题
+labels: bug
 ---
 
-**Before you start**
-Please take a look at the [FAQ](https://github.com/GoogleChromeLabs/squoosh/wiki/FAQ) as well as the already opened issues! If nothing fits your problem, go ahead and fill out the following template:
+## 问题描述
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+请清楚描述实际发生的情况，以及你原本期望的结果。
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+## 复现步骤
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+1. 打开……
+2. 上传……
+3. 设置……
+4. 出现……
 
-**Version:**
- - OS w/ version: [e.g. iOS 12]
- - Browser w/ version [e.g. Chrome 70]
- - Node version: [e.g. 10.11.0]
- - npm version: [e.g. 6.4.1]
+## 环境
 
-**Is your issue related to the quality of image compression?**
-Please attach original and output images (you can drag & drop to attach). 
-- Original image 
-- Output image from Squoosh
+- 操作系统及版本：
+- 浏览器及版本：
+- VeryPixel 页面地址或提交版本：
+- 输出格式与参数：
 
-**Additional context, screenshots, screencasts**
-Add any other context about the problem here.
+## 补充信息
+
+可附上截图、控制台错误或不含敏感信息的测试图片。请勿上传私人照片、访问令牌、服务器日志或其他敏感数据。

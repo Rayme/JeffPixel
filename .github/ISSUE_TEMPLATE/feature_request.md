@@ -1,18 +1,21 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
-labels: 
-
+name: 功能建议
+about: 提议改进 VeryPixel
+labels: enhancement
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## 使用场景
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+请描述你遇到的问题，以及这个功能会帮助谁。
 
-**Does other service/app have this feature?**
-Add any service you know/use that has this feature (We want to know for research)
+## 建议方案
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+请说明你期望的交互、处理方式或输出结果。
+
+## 可选方案
+
+如果你考虑过其他做法，请一并说明。
+
+## 补充信息
+
+可附上示意图或相关资料。涉及第三方代码、设计或素材时，请注明来源和许可证。

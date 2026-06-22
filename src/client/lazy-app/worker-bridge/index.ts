@@ -29,6 +29,12 @@ class WorkerBridge {
     this._worker = new Worker(workerURL);
     this._workerApi = wrap<ProcessorWorkerApi>(this._worker);
   }
+
+  /** Release codec/WASM memory before the next large batch item. */
+  reset() {
+    clearTimeout(this._workerTimeout);
+    this._terminateWorker();
+  }
 }
 
 for (const methodName of methodNames) {

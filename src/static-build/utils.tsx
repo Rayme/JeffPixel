@@ -1,3 +1,4 @@
+// Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
 /**
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,12 +62,14 @@ export function escapeStyleScriptContent(str: string): string {
  * Origin of the site, depending on the environment.
  */
 export const siteOrigin = (() => {
+  if (process.env.SITE_ORIGIN) return process.env.SITE_ORIGIN;
   if (process.env.DEV_PORT) return `http://localhost:${process.env.DEV_PORT}`;
   // https://docs.netlify.com/configure-builds/environment-variables/#build-metadata
-  if (process.env.CONTEXT === 'production') return 'https://squoosh.app';
   if (process.env.DEPLOY_PRIME_URL) return process.env.DEPLOY_PRIME_URL;
-  console.warn(
-    'Unable to determine site origin, defaulting to https://squoosh.app',
-  );
-  return 'https://squoosh.app';
+  return 'http://localhost:5000';
 })();
+
+export const legalOperator = process.env.LEGAL_ENTITY || '阿杰';
+export const privacyEmail = process.env.PRIVACY_EMAIL || 'jack@veryjack.com';
+export const sourceRepositoryUrl =
+  process.env.SOURCE_REPOSITORY_URL || 'https://github.com/very-jack/VeryPixel';

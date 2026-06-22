@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="2400" viewBox="0 0 1200 2400">
+  <defs><linearGradient id="g2" y2="1"><stop stop-color="#153a56"/><stop offset="1" stop-color="#e8a772"/></linearGradient></defs>
+  <rect width="1200" height="2400" fill="url(#g2)"/>
+  <circle cx="600" cy="820" r="360" fill="#f5e5b3" opacity=".88"/>
+  <path d="M0 1900 420 1280l310 420 470-610v1310H0z" fill="#172d32"/>
+  <text x="90" y="220" fill="white" font-size="72" font-family="sans-serif">VeryPixel 1200 × 2400</text>
+</svg>
