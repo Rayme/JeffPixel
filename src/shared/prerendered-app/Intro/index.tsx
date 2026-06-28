@@ -89,7 +89,7 @@ export default class Intro extends Component<Props> {
         </aside>
 
         <footer class={style.footer}>
-          <span>MOZJPEG · WEBP · JPEG · PNG</span>
+          <span>JPEG · PNG · WEBP</span>
           <nav class={style.legalLinks}>
             <a href="/privacy/">隐私政策</a>
             <a href="/terms/">使用条款</a>

@@ -10,7 +10,7 @@
 - `VeryPixel` 名称、Logo 与品牌资产不包含在软件许可中；Fork 和衍生服务必须更换品牌，不得暗示官方背书。
 - 不得使用 Google、Chrome、Squoosh 或第三方项目名称暗示官方背书。
 - 部署产物必须包含 `/open-source/` 及 `/licenses/` 下的许可文本。
-- VeryPixel 已从源码仓库和生产构建移除未使用的 GPL `imagequant.wasm`、Browser GIF、额外编解码器和 HQX，以缩小仓库体积与第三方许可范围。
+- VeryPixel 已从源码仓库和生产构建移除未使用的 GPL `imagequant.wasm`、Browser GIF、浏览器 JPEG/PNG 导出选项、额外编解码器和 HQX，以缩小仓库体积与第三方许可范围。
 
 ## 2. 上线前必须填写
 

@@ -35,7 +35,7 @@ Encoders must have the following:
 
 `shared/meta.ts` which exposes the following:
 
-- `label` - The name of the codec as displayed to the user.
+- `label` - The internal codec name.
 - `mimeType` - The mime type to be used when generating the output file.
 - `extension` - The file extension to be used when generating the output file.
 - `EncodeOptions` - An interface for the codec's options.
@@ -53,13 +53,5 @@ And returns (a promise for) an `ArrayBuffer`.
 
 Optionally it may export a method `featureTest`, which returns a boolean indicating support for this decoder.
 
-Optionally it may export a component, `Options`, with the following props:
-
-```ts
-interface Props {
-  options: EncodeOptions;
-  onChange(newOptions: EncodeOptions): void;
-}
-```
-
-…where `EncodeOptions` are the options for that encoder.
+VeryPixel keeps codec controls in `src/client/lazy-app/Compress/index.tsx`.
+Encoder clients should not export UI components.

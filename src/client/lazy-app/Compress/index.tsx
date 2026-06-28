@@ -7,17 +7,17 @@ import logo from 'url:static-build/assets/verypixel-logo.webp';
 import { builtinDecode } from '../util';
 import { encoderMap, EncoderState, EncoderType } from '../feature-meta';
 import WorkerBridge from '../worker-bridge';
-import prettyBytes from './Results/pretty-bytes';
+import prettyBytes from './pretty-bytes';
 import * as style from './style.css';
 import 'add-css:./style.css';
 
-const allowedEncoders = [
-  'mozJPEG',
-  'webP',
-  'browserJPEG',
-  'browserPNG',
-] as const;
+const allowedEncoders = ['mozJPEG', 'oxiPNG', 'webP'] as const;
 type AllowedEncoder = typeof allowedEncoders[number];
+const formatLabels: Record<AllowedEncoder, string> = {
+  mozJPEG: 'JPEG',
+  oxiPNG: 'PNG',
+  webP: 'WebP',
+};
 
 // Mirrors the compact lossless presets used by the original Squoosh WebP UI.
 // Each entry is [method, quality], while the user-facing effort is its index.
@@ -124,9 +124,9 @@ export default class Compress extends Component<Props, State> {
       },
       resizeEnabled: false,
       maxWidth: 1920,
-      maxHeight: 1920,
+      maxHeight: 1080,
       maxWidthInput: '1920',
-      maxHeightInput: '1920',
+      maxHeightInput: '1080',
       compare: 50,
       processing: false,
       packing: false,
@@ -298,14 +298,12 @@ export default class Compress extends Component<Props, State> {
 
   private onQualityChange = (event: Event) => {
     const quality = Number((event.currentTarget as HTMLInputElement).value);
-    const normalized =
-      this.state.encoderState.type === 'browserJPEG' ? quality / 100 : quality;
     this.setState((state) => ({
       encoderState: {
         ...state.encoderState,
         options: {
           ...(state.encoderState.options as any),
-          quality: normalized,
+          quality,
         },
       } as EncoderState,
     }));
@@ -503,10 +501,7 @@ export default class Compress extends Component<Props, State> {
     } = this.state;
     const active = items[selected];
     const rawQuality = (encoderState.options as any).quality;
-    const quality =
-      encoderState.type === 'browserJPEG'
-        ? Math.round((rawQuality || 0) * 100)
-        : Math.round(rawQuality || 0);
+    const quality = Math.round(rawQuality || 0);
     const hasQuality = typeof rawQuality === 'number';
     const isWebP = encoderState.type === 'webP';
     const webPLossless = isWebP && !!(encoderState.options as any).lossless;
@@ -632,12 +627,12 @@ export default class Compress extends Component<Props, State> {
                 <div class={style.previewMeta}>
                   <span>原图</span>
                   <strong>{active.file.name}</strong>
-                  <span>压缩结果</span>
+                  <span>压缩效果</span>
                 </div>
                 <div class={style.compare}>
                   <img
                     src={active.outputUrl || active.originalUrl}
-                    alt={active.outputUrl ? '压缩结果' : '原图'}
+                    alt={active.outputUrl ? '压缩效果' : '原图'}
                   />
                   {active.outputUrl && (
                     <div
@@ -651,7 +646,7 @@ export default class Compress extends Component<Props, State> {
                     <span>‹ ›</span>
                   </div>
                   <input
-                    aria-label="原图与压缩结果对比"
+                    aria-label="原图与压缩效果对比"
                     type="range"
                     min="0"
                     max="100"
@@ -687,6 +682,14 @@ export default class Compress extends Component<Props, State> {
                     </strong>
                   </div>
                   <div>
+                    <small>输出尺寸</small>
+                    <strong>
+                      {active.outputWidth && active.outputHeight
+                        ? `${active.outputWidth} × ${active.outputHeight}`
+                        : '—'}
+                    </strong>
+                  </div>
+                  <div>
                     <small>节省空间</small>
                     <strong>
                       {active.output
@@ -718,7 +721,7 @@ export default class Compress extends Component<Props, State> {
                     value={type}
                     disabled={encoderSupport[type] === false}
                   >
-                    {encoderMap[type].meta.label}
+                    {formatLabels[type]}
                     {encoderSupport[type] === false ? '（浏览器不支持）' : ''}
                   </option>
                 ))}

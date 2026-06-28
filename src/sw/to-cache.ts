@@ -1,5 +1,6 @@
 // Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
 import { simd } from 'wasm-feature-detect';
+import checkThreadsSupport from 'worker-shared/supports-wasm-threads';
 
 // Give TypeScript the correct global.
 declare var self: ServiceWorkerGlobalScope;
@@ -23,6 +24,10 @@ import * as featuresWorker from 'entry-data:../features-worker';
 // WebP
 import * as webpEncSimd from 'entry-data:codecs/webp/enc/webp_enc_simd';
 import * as webpEnc from 'entry-data:codecs/webp/enc/webp_enc';
+
+// OxiPNG
+import * as oxiMt from 'entry-data:codecs/oxipng/pkg-parallel/squoosh_oxipng';
+import * as oxi from 'entry-data:codecs/oxipng/pkg/squoosh_oxipng';
 
 export function shouldCacheDynamically(url: string) {
   return false;
@@ -56,7 +61,10 @@ initialJs = subtractSets(
 export const initial = ['/', ...initialJs];
 
 export const theRest = (async () => {
-  const supportsSimd = await simd();
+  const [supportsThreads, supportsSimd] = await Promise.all([
+    checkThreadsSupport(),
+    simd(),
+  ]);
 
   const items: string[] = [];
 
@@ -65,6 +73,13 @@ export const theRest = (async () => {
   }
 
   addWithDeps(featuresWorker);
+
+  // OxiPNG
+  if (supportsThreads) {
+    addWithDeps(oxiMt);
+  } else {
+    addWithDeps(oxi);
+  }
 
   // WebP
   if (supportsSimd) {

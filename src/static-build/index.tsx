@@ -45,6 +45,7 @@ const toOutput: Output = {
     'codecs/mozjpeg/LICENSE.codec.md',
     'utf8',
   ),
+  'licenses/oxipng.txt': readFileSync('codecs/oxipng/LICENSE.codec.md', 'utf8'),
   'licenses/webp.txt': readFileSync('codecs/webp/LICENSE.codec.md', 'utf8'),
   'licenses/resize.txt': readFileSync('codecs/resize/LICENSE.codec.md', 'utf8'),
   'licenses/preact.txt': readFileSync('node_modules/preact/LICENSE', 'utf8'),

@@ -10,8 +10,8 @@ The project was materially modified in 2026, including:
 - proportional bounding-box resize without cropping, stretching, or upscaling;
 - output filename suffix `_VeryPixel`;
 - browser-local ZIP packaging for multi-image downloads;
-- restriction of output formats to MozJPEG, WebP, Browser JPEG, and Browser PNG;
-- removal of the original analytics integration, demos, Browser GIF, unused encoders/decoders, GPL imagequant, and HQX from the source repository and production build;
+- restriction of output formats to user-facing JPEG, PNG, and WebP, backed by Squoosh MozJPEG, OxiPNG, and WebP;
+- removal of the original analytics integration, demos, Browser GIF, browser JPEG/PNG export options, unused encoders/decoders, GPL imagequant, and HQX from the source repository and production build;
 - addition of self-hosted Umami for basic page-visit analytics; uploaded images remain browser-local;
 - addition of privacy, terms, open-source, and deployment-compliance materials;
 - build compatibility fixes for workspace paths and current local tooling.

@@ -27,7 +27,7 @@ VeryPixel 基于 [GoogleChromeLabs/Squoosh](https://github.com/GoogleChromeLabs/
 ## 主要功能
 
 - 批量导入图片，并统一应用输出格式、质量和尺寸参数；
-- 支持 MozJPEG、WebP、Browser JPEG 和 Browser PNG；
+- 支持 JPEG、PNG 和 WebP；底层分别使用 Squoosh 的 MozJPEG、OxiPNG 和 WebP 编码器；
 - WebP 支持质量、Effort 与 Lossless 设置；
 - 按原始比例缩小至指定宽高边界，不裁切、不拉伸、不放大；
 - 原图与压缩结果实时对比；
@@ -52,9 +52,7 @@ npm run dev
 
 ```bash
 npm ci
-SITE_ORIGIN="https://pixel.veryjack.com" \
-SOURCE_REPOSITORY_URL="https://github.com/very-jack/VeryPixel" \
-npm run build
+npm run build:prod
 ```
 
 构建产物位于 `build/`。它是纯静态网站，可以部署到 Nginx、Caddy、Cloudflare Pages、GitHub Pages 或其他静态托管服务。
@@ -67,7 +65,7 @@ npm run build
 
 ```text
 src/                  应用界面、Worker、Service Worker 与静态页面
-codecs/               MozJPEG、WebP、Resize 等编解码组件
+codecs/               MozJPEG、OxiPNG、WebP、Resize 等编解码组件
 lib/                  构建辅助脚本
 test-fixtures/        本地测试图片
 NOTICE                上游项目与第三方归属声明

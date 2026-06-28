@@ -221,6 +221,9 @@ const OpenSource = () => (
           <a href="/licenses/mozjpeg.txt">查看许可文本</a>
         </li>
         <li>
+          OxiPNG — MIT；<a href="/licenses/oxipng.txt">查看许可文本</a>
+        </li>
+        <li>
           WebP — BSD 3-Clause；<a href="/licenses/webp.txt">查看许可文本</a>
         </li>
         <li>
