@@ -41,8 +41,9 @@ upstream and third-party license scope remains unchanged. See FORK_LICENSE.
 - Added filename regression tests, a build/compliance check, reproducible deployment
   configuration and Node.js 22 development baseline with a pinned Wrangler version.
 - Retained the upstream image codecs and metadata-removal behavior.
-- Updated fflate from 0.8.2 to its 0.8.3 patch release and extended CI to run
-  filename tests and license/distribution checks.
+- Pinned the upstream fflate 0.8.2 dependency for compatibility with the
+  upstream TypeScript 4.4 toolchain. The app uses ZIP output only (zipSync).
+  Extended CI to run filename tests and license/distribution checks.
 
 Modified files carry a JeffPixel modification notice or are explicitly identified
 here: package.json, package-lock.json, .nvmrc, .gitignore, README.md, MODIFICATIONS.md;
