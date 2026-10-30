@@ -1,0 +1,16 @@
+// JeffPixel deployment configuration, added 2026-10-30. AGPL-3.0-only.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "jeffpixel",
+  "account_id": "afb11196e629b8de15dc8a05718180d2",
+  "compatibility_date": "2026-10-30",
+  "assets": {
+    "directory": "./build",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  },
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [{ "pattern": "pixel.jefftay.com", "custom_domain": true }],
+  "observability": { "enabled": true, "traces": { "enabled": true } }
+}

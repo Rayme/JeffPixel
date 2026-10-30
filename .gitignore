@@ -21,3 +21,7 @@ build
 src/features-worker/index.ts
 src/client/lazy-app/worker-bridge/meta.ts
 src/client/lazy-app/feature-meta/index.ts
+
+# JeffPixel local deployment/runtime artifacts (2026-10-30)
+.wrangler/
+test-results/

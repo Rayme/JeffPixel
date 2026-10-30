@@ -1,103 +1,86 @@
-<p align="center">
-  <img src="./src/static-build/assets/verypixel-logo.webp" width="112" alt="VeryPixel logo">
-</p>
+<!-- Modified by JeffPixel on 2026-10-30. Original attribution is retained below and in NOTICE. -->
+<p align="center"><img src="./src/static-build/assets/jeffpixel-logo.png" width="96" alt="JeffPixel 自制图标"></p>
+<h1 align="center">JeffPixel</h1>
+<p align="center">浏览器本地图片压缩、格式转换与自定义批量命名。</p>
 
-<h1 align="center">VeryPixel</h1>
+在线工具：https://pixel.jefftay.com · 源码：https://github.com/Rayme/JeffPixel
 
-<p align="center">
-  一款在浏览器本地运行的批量图片压缩与格式转换工具。
-</p>
+JeffPixel 是 [very-jack/VeryPixel](https://github.com/very-jack/VeryPixel) 的独立衍生版本，沿用其基于 [GoogleChromeLabs/Squoosh](https://github.com/GoogleChromeLabs/squoosh) 的本地压缩链路。上游 VeryPixel 由阿杰维护，相关版权、许可证和贡献记录完整保留。
 
-<p align="center">
-  <a href="https://pixel.veryjack.com">在线使用</a>
-  ·
-  <a href="https://pixel.veryjack.com/privacy/">隐私政策</a>
-  ·
-  <a href="https://github.com/very-jack/VeryPixel">GitHub</a>
-  ·
-  <a href="https://veryjack.com">VeryJack 博客</a>
-</p>
+## 功能
 
-## 关于 VeryPixel
+- 批量导入，统一应用 JPEG、PNG 或 WebP 格式、质量与等比缩放参数。
+- 使用 Squoosh 的 MozJPEG、OxiPNG、WebP 编码器，支持原图与结果对比。
+- 默认保持原文件名；输出扩展名跟随编码格式。
+- 可选前后缀、统一名称与序号、区分大小写的文字查找替换。
+- 导出名实时预览，单张下载与 ZIP 使用同一套名称，自动处理重名和非法字符。
+- 修改命名复用已编码的图片字节，无需重新压缩。
+- 全程浏览器本地处理，资源完整缓存后支持离线使用。
+- 沿用上游的元信息移除行为；请保留原始照片。
 
-VeryPixel 基于 [GoogleChromeLabs/Squoosh](https://github.com/GoogleChromeLabs/squoosh) 二次开发，面向需要一次处理多张图片的使用场景。它使用浏览器提供的能力、Web Worker 与 WebAssembly 在本地完成解码、缩放和压缩。
+本版本移除了上游 Umami 接入，没有添加统计或广告脚本。
 
-用户选择的图片不会上传到 VeryPixel 服务器。项目接入的自托管 Umami 仅用于基础页面访问统计，不接收用户图片。
+## 开发与测试
 
-## 主要功能
-
-- 批量导入图片，并统一应用输出格式、质量和尺寸参数；
-- 支持 JPEG、PNG 和 WebP；底层分别使用 Squoosh 的 MozJPEG、OxiPNG 和 WebP 编码器；
-- WebP 支持质量、Effort 与 Lossless 设置；
-- 按原始比例缩小至指定宽高边界，不裁切、不拉伸、不放大；
-- 原图与压缩结果实时对比；
-- 单张图片直接下载，多张图片打包为 ZIP；
-- 输出文件名自动添加 `_VeryPixel` 后缀；
-- 完整缓存后可离线进行图片处理与下载。
-
-## 本地开发
-
-推荐使用 Node.js 20，具体版本见 [`.nvmrc`](./.nvmrc)。
+使用 Node.js 22（具体基线见 `.nvmrc`）：
 
 ```bash
-git clone https://github.com/very-jack/VeryPixel.git
-cd VeryPixel
-npm ci
+git clone https://github.com/Rayme/JeffPixel.git
+cd JeffPixel
+npm ci --ignore-scripts
+npm test
 npm run dev
 ```
 
-默认开发地址为 `http://localhost:5000`。
+开发地址为 `http://localhost:5000`。依赖已有编解码 WASM，无需本地重编译 C++/Rust 编码器。
 
-## 生产构建
+## 生产构建与 Cloudflare 部署
 
 ```bash
-npm ci
 npm run build:prod
+npm run check:compliance
+npm run deploy:check
+npm run preview
 ```
 
-构建产物位于 `build/`。它是纯静态网站，可以部署到 Nginx、Caddy、Cloudflare Pages、GitHub Pages 或其他静态托管服务。
+产物位于 `build/`。`wrangler.jsonc` 配置静态资源与 `pixel.jefftay.com` 自定义域名，`_headers` 提供 COOP/COEP 等响应头。部署到其他账户时，先更换 `account_id`、域名、仓库与维护者资料。
 
-公开部署 AGPL 版本时，`SOURCE_REPOSITORY_URL` 应指向与线上版本对应的公开源码仓库，网站的源码许可页面会显示该链接。
+正式发布先提交并公开推送源码，再用该提交重新构建。`build:prod` 将 Git 提交号写入公开源码链接和 `version.json`。发布前执行：
 
-`build/`、`node_modules/` 和 `.tmp/` 均为生成内容，不需要提交到 Git 仓库。部署时请上传 `build/` 内的文件，而不是整个源码仓库。
+```bash
+npm run check:publish
+npm run deploy
+```
 
-## 项目结构
+`check:publish` 校验工作区干净、GitHub 仓库公开且为上游 Fork、线上对应提交可访问、构建与当前提交一致。凭据使用 Wrangler OAuth 或本地受保护环境变量，勿提交到仓库。
+
+静态托管只分发应用资源；图片编码、命名及 ZIP 都在访问者设备内完成。
+
+## 来源与许可证
+
+- Squoosh 派生部分继续遵循 Apache License 2.0。
+- 阿杰及 VeryPixel 贡献者拥有版权的新增代码与可版权修改继续遵循 AGPL-3.0-only。
+- JeffPixel 新增代码、修改、测试、文档及自制图标采用 AGPL-3.0-only，见 `FORK_LICENSE`。
+- 第三方编解码器与库继续遵循各自许可证。
+
+保留原始 `LICENSE`、`NOTICE`、`LICENSES/` 和各组件许可。`FORK_NOTICE` 补充 JeffPixel 的归属，`MODIFICATIONS.md` 保留上游历史并记录本次逐项改动。线上 `/open-source/` 和 `/licenses/` 提供完整文本与对应源码入口。
+
+VeryPixel 名称、Logo 和品牌资产由其权利人保留。JeffPixel 使用自制名称和图标；上游名称用于来源归属。VeryPixel 的原图标已从当前文件树和线上产物移除，继承的 Git 历史保留原始记录。
+
+This software is based in part on the work of the Independent JPEG Group.
+
+## 目录
 
 ```text
-src/                  应用界面、Worker、Service Worker 与静态页面
-codecs/               MozJPEG、OxiPNG、WebP、Resize 等编解码组件
-lib/                  构建辅助脚本
-test-fixtures/        本地测试图片
-NOTICE                上游项目与第三方归属声明
-LICENSE / LICENSES/   混合许可证适用范围与完整文本
-MODIFICATIONS.md      相对于 Squoosh 的主要修改
-DEPLOYMENT_COMPLIANCE.md  部署与合规检查清单
+src/                  界面、Worker、Service Worker 和静态页面
+codecs/               上游编解码组件与各自许可证
+lib/                  上游构建辅助脚本
+test/                 命名回归、构建合规及发布校验
+test-fixtures/        上游合成测试图片
+LICENSE / LICENSES/   原始混合许可与完整文本
+NOTICE                原始来源声明（原文保留）
+FORK_LICENSE          JeffPixel 新增内容许可
+FORK_NOTICE           JeffPixel 来源声明
+MODIFICATIONS.md      上游及本版本修改记录
+wrangler.jsonc        Cloudflare 静态托管配置
 ```
-
-## 隐私与安全
-
-VeryPixel 的图片处理链路在用户浏览器内执行。为了方便独立核验，你可以打开浏览器开发者工具的 Network 面板，上传图片并观察网络请求；图片文件本身不会被发送到服务器。
-
-公开部署前请阅读 [DEPLOYMENT_COMPLIANCE.md](./DEPLOYMENT_COMPLIANCE.md)，并保留网站中的隐私政策、使用条款及源码许可声明页面。
-
-## 开源来源与许可证
-
-VeryPixel 采用混合许可证，以尊重上游许可并要求公开部署版本回馈源码：
-
-- 来自 [Squoosh](https://github.com/GoogleChromeLabs/squoosh) 的代码继续遵循 [Apache License 2.0](./LICENSES/Apache-2.0.txt)；
-- 阿杰及 VeryPixel 贡献者拥有版权的新增代码与修改采用 [GNU AGPL 3.0](./LICENSES/AGPL-3.0.txt)；
-- 第三方库与编解码器继续遵循各自许可证。
-
-AGPL 允许包括商业用途在内的使用，但修改 VeryPixel 后通过网络向用户提供服务时，必须按照许可证向这些用户提供对应源码。完整适用范围见根目录的 [LICENSE](./LICENSE)、[NOTICE](./NOTICE) 和 [MODIFICATIONS.md](./MODIFICATIONS.md)。
-
-`VeryPixel` 名称、Logo 与品牌资产不包含在软件开源授权中。Fork 或衍生服务必须使用自己的名称和品牌，不得暗示获得 VeryPixel 或阿杰的官方认可。
-
-## 贡献
-
-欢迎通过 Issue 报告问题或提出建议。提交代码前请先阅读 [CONTRIBUTING.md](./CONTRIBUTING.md)，并确保 `npm run build` 能够通过。
-
-## 作者
-
-VeryPixel 由阿杰维护。更多关于独立开发、效率工具和技术实践的内容，欢迎访问 [VeryJack 博客](https://veryjack.com)。
-
-VeryPixel 是独立项目，与 Google、Google Chrome 或 Squoosh 原项目维护者不存在赞助、背书或隶属关系。

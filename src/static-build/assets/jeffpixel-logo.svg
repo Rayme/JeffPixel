@@ -1,0 +1,11 @@
+<!-- Copyright 2026 JeffPixel contributors. SPDX-License-Identifier: AGPL-3.0-only. Independently created artwork. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#142c40"/>
+  <circle cx="221" cy="247" r="137" fill="#cbf0f3"/>
+  <circle cx="291" cy="188" r="124" fill="#142c40"/>
+  <g fill="#67c7be">
+    <rect x="326" y="102" width="36" height="36" rx="7"/>
+    <rect x="382" y="158" width="36" height="36" rx="7"/>
+    <rect x="326" y="214" width="36" height="36" rx="7"/>
+  </g>
+</svg>

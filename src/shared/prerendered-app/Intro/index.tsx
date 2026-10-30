@@ -1,8 +1,10 @@
 // Derived from Squoosh and substantially modified by VeryPixel in 2026.
 // See LICENSE, NOTICE, and MODIFICATIONS.md.
+// Modified by JeffPixel on 2026-10-30: own branding, naming description and source link.
 import { h, Component } from 'preact';
 import type SnackBarElement from 'shared/custom-els/snack-bar';
-import logo from 'url:static-build/assets/verypixel-logo.webp';
+import logo from 'url:static-build/assets/jeffpixel-logo.png';
+import { brandName, sourceRepositoryUrl } from 'shared/brand';
 import * as style from './style.css';
 import 'add-css:./style.css';
 
@@ -28,9 +30,9 @@ export default class Intro extends Component<Props> {
     return (
       <main class={style.intro}>
         <nav class={style.nav}>
-          <a class={style.brand} href="/" aria-label="VeryPixel home">
+          <a class={style.brand} href="/" aria-label="JeffPixel 首页">
             <img class={style.brandMark} src={logo} alt="" />
-            <span>VeryPixel</span>
+            <span>{brandName}</span>
           </a>
           <span class={style.localBadge}>
             <i /> Local processing
@@ -39,17 +41,17 @@ export default class Intro extends Component<Props> {
 
         <section class={style.hero}>
           <h1>
-            Make every pixel
+            让图片轻一点，
             <br />
-            <em>feel lighter.</em>
+            <em>名字随你定。</em>
           </h1>
           <p>
-            无需复杂设置，一次导入整组图片，统一完成压缩与格式转换。
+            一次导入整组图片，统一压缩、转换格式，自定义批量命名。
             <br />
             图片全程留在浏览器本地，源码公开透明、可以独立审计。
           </p>
-          <ul class={style.trustPoints} aria-label="VeryPixel 产品特点">
-            <li>简单易用</li>
+          <ul class={style.trustPoints} aria-label="JeffPixel 产品特点">
+            <li>自由命名</li>
             <li>本地安全</li>
             <li>开源透明</li>
           </ul>
@@ -94,8 +96,7 @@ export default class Intro extends Component<Props> {
             <a href="/privacy/">隐私政策</a>
             <a href="/terms/">使用条款</a>
             <a href="/open-source/">源码许可</a>
-            <a href="https://github.com/very-jack/VeryPixel">GitHub</a>
-            <a href="https://veryjack.com">VeryJack 博客</a>
+            <a href={sourceRepositoryUrl}>本版源码</a>
           </nav>
         </footer>
       </main>

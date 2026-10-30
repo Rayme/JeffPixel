@@ -1,4 +1,5 @@
 // Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
+// Modified by JeffPixel on 2026-10-30: own branding and removal of upstream analytics.
 /**
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +17,8 @@ import { h, FunctionalComponent } from 'preact';
 import baseCss from 'css:./base.css';
 import initialCss from 'initial-css:';
 import { allSrc } from 'client-bundle:client/initial-app';
-import favicon from 'url:static-build/assets/verypixel-logo.webp';
-import ogImage from 'url:static-build/assets/verypixel-logo.webp';
+import favicon from 'url:static-build/assets/jeffpixel-logo.png';
+import ogImage from 'url:static-build/assets/jeffpixel-logo.png';
 import { escapeStyleScriptContent, siteOrigin } from 'static-build/utils';
 import Intro from 'shared/prerendered-app/Intro';
 import snackbarCss from 'css:../../../shared/custom-els/snack-bar/styles.css';
@@ -29,46 +30,39 @@ const Index: FunctionalComponent<Props> = () => (
   <html lang="zh-CN">
     <head>
       <meta charSet="utf-8" />
-      <title>VeryPixel — Batch image compression</title>
+      <title>JeffPixel — 本地图片压缩与批量命名</title>
       <meta
         name="description"
-        content="Private batch image compression and conversion, processed locally in your browser."
+        content="浏览器本地批量图片压缩、格式转换与自定义命名，支持 JPEG、PNG、WebP。"
       />
       <meta name="twitter:card" content="summary" />
-      <meta property="og:title" content="VeryPixel" />
+      <meta property="og:title" content="JeffPixel" />
       <meta property="og:type" content="website" />
       <meta property="og:image" content={`${siteOrigin}${ogImage}`} />
       <meta
         property="og:image:secure_url"
         content={`${siteOrigin}${ogImage}`}
       />
-      <meta property="og:image:type" content="image/webp" />
-      <meta property="og:image:width" content="1254" />
-      <meta property="og:image:height" content="1254" />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:width" content="512" />
+      <meta property="og:image:height" content="512" />
       <meta
         property="og:image:alt"
-        content="VeryPixel image compression workspace."
+        content="JeffPixel 图片压缩与批量命名工具"
       />
       <meta
         name="og:description"
-        content="Private batch image compression and conversion, processed locally in your browser."
+        content="浏览器本地批量图片压缩、格式转换与自定义命名。"
       />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-      />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
-      <link rel="icon" type="image/webp" href={favicon} />
+      <link rel="icon" type="image/png" href={favicon} />
       <link rel="apple-touch-icon" href={ogImage} />
       <meta name="theme-color" content="#98c1d9" />
       <link rel="manifest" href="/manifest.json" />
       <link rel="canonical" href={siteOrigin} />
-      <script
-        defer
-        src="https://umami.veryjack.com/script.js"
-        data-website-id="1f8a1944-ed9d-4ba9-9533-974bada58a47"
-      />
+
       <style
         dangerouslySetInnerHTML={{ __html: escapeStyleScriptContent(baseCss) }}
       />

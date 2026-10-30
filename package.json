@@ -1,19 +1,25 @@
 {
   "private": true,
-  "name": "verypixel",
+  "name": "jeffpixel",
   "version": "2.0.0",
   "license": "SEE LICENSE IN LICENSE",
-  "homepage": "https://pixel.veryjack.com",
+  "homepage": "https://pixel.jefftay.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/very-jack/VeryPixel.git"
+    "url": "git+https://github.com/Rayme/JeffPixel.git"
   },
   "bugs": {
-    "url": "https://github.com/very-jack/VeryPixel/issues"
+    "url": "https://github.com/Rayme/JeffPixel/issues"
   },
   "scripts": {
     "build": "rollup -c && node lib/move-output.js",
-    "build:prod": "SITE_ORIGIN=\"https://pixel.veryjack.com\" SOURCE_REPOSITORY_URL=\"https://github.com/very-jack/VeryPixel\" npm run build",
+    "build:prod": "SITE_ORIGIN=\"https://pixel.jefftay.com\" SOURCE_REPOSITORY_URL=\"https://github.com/Rayme/JeffPixel\" SOURCE_COMMIT=\"$(git rev-parse HEAD)\" npm run build",
+    "test": "node --test test/*.test.cjs",
+    "check:compliance": "node test/compliance.cjs",
+    "check:publish": "node test/publish-check.cjs",
+    "preview": "WRANGLER_SEND_METRICS=false wrangler dev --ip 127.0.0.1 --port 8787",
+    "deploy:check": "WRANGLER_SEND_METRICS=false wrangler deploy --dry-run",
+    "deploy": "npm run check:publish && WRANGLER_SEND_METRICS=false wrangler deploy",
     "debug": "node --inspect-brk node_modules/.bin/rollup -c",
     "dev": "DEV_PORT=\"${DEV_PORT:=5000}\" run-p watch serve",
     "watch": "rollup -cw",
@@ -56,7 +62,8 @@
     "serve": "^11.3.2",
     "typescript": "^4.4.4",
     "wasm-feature-detect": "^1.2.11",
-    "which": "^2.0.2"
+    "which": "^2.0.2",
+    "wrangler": "4.156.0"
   },
   "lint-staged": {
     "*.{js,css,json,md,ts,tsx}": "prettier --write",

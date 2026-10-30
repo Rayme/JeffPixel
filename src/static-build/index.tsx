@@ -1,4 +1,5 @@
 // Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
+// Modified by JeffPixel on 2026-10-30: own manifest, icons and additional notices.
 /**
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,10 +14,10 @@
  */
 import { h } from 'preact';
 
-import { renderPage, writeFiles } from './utils';
+import { renderPage, writeFiles, sourceVersionUrl } from './utils';
 import IndexPage from './pages/index';
 import LegalPage from './pages/legal';
-import * as iconLarge from 'img-url:static-build/assets/verypixel-logo.webp';
+import * as iconLarge from 'img-url:static-build/assets/jeffpixel-logo.png';
 import dedent from 'dedent';
 import { lookup as lookupMime } from 'mime-types';
 import { readFileSync } from 'fs';
@@ -33,6 +34,11 @@ interface Output {
 
 const toOutput: Output = {
   'index.html': renderPage(<IndexPage />),
+  'version.json': JSON.stringify({
+    name: 'JeffPixel',
+    commit: process.env.SOURCE_COMMIT || null,
+    source: sourceVersionUrl,
+  }),
   'privacy/index.html': renderPage(<LegalPage kind="privacy" />),
   'terms/index.html': renderPage(<LegalPage kind="terms" />),
   'open-source/index.html': renderPage(<LegalPage kind="open-source" />),
@@ -41,6 +47,8 @@ const toOutput: Output = {
   'licenses/AGPL-3.0.txt': readFileSync('LICENSES/AGPL-3.0.txt', 'utf8'),
   'licenses/VeryPixel-NOTICE.txt': readFileSync('NOTICE', 'utf8'),
   'licenses/MODIFICATIONS.txt': readFileSync('MODIFICATIONS.md', 'utf8'),
+  'licenses/JeffPixel-License.txt': readFileSync('FORK_LICENSE', 'utf8'),
+  'licenses/JeffPixel-NOTICE.txt': readFileSync('FORK_NOTICE', 'utf8'),
   'licenses/mozjpeg.txt': readFileSync(
     'codecs/mozjpeg/LICENSE.codec.md',
     'utf8',
@@ -54,10 +62,27 @@ const toOutput: Output = {
     'utf8',
   ),
   'licenses/fflate.txt': readFileSync('node_modules/fflate/LICENSE', 'utf8'),
+  'licenses/comlink.txt': readFileSync('node_modules/comlink/LICENSE', 'utf8'),
+  'licenses/file-drop-element.txt': readFileSync(
+    'node_modules/file-drop-element/LICENSE',
+    'utf8',
+  ),
+  'licenses/idb-keyval.txt': readFileSync(
+    'node_modules/idb-keyval/LICENCE',
+    'utf8',
+  ),
+  'licenses/pointer-tracker.txt': readFileSync(
+    'node_modules/pointer-tracker/LICENSE',
+    'utf8',
+  ),
+  'licenses/wasm-feature-detect.txt': readFileSync(
+    'node_modules/wasm-feature-detect/LICENSE',
+    'utf8',
+  ),
   'manifest.json': JSON.stringify({
-    name: 'VeryPixel',
-    short_name: 'VeryPixel',
-    start_url: '/?utm_medium=PWA&utm_source=launcher',
+    name: 'JeffPixel',
+    short_name: 'JeffPixel',
+    start_url: '/',
     display: 'standalone',
     orientation: 'any',
     background_color: '#fff',
@@ -72,14 +97,14 @@ const toOutput: Output = {
         src: iconLarge.default,
         type: lookupMime(iconLarge.default),
         sizes: manifestSize(iconLarge),
-        purpose: 'maskable',
+        purpose: 'any',
       },
     ],
-    description: 'Batch-compress and convert images privately in your browser.',
+    description: '浏览器本地图片压缩、格式转换与自定义批量命名。',
     lang: 'zh-CN',
     categories: ['photo', 'productivity', 'utilities'],
     share_target: {
-      action: '/?utm_medium=PWA&utm_source=share-target&share-target',
+      action: '/',
       method: 'POST',
       enctype: 'multipart/form-data',
       params: {
@@ -104,6 +129,9 @@ const toOutput: Output = {
     /*
       Cross-Origin-Embedder-Policy: require-corp
       Cross-Origin-Opener-Policy: same-origin
+      X-Content-Type-Options: nosniff
+      Referrer-Policy: strict-origin-when-cross-origin
+      Permissions-Policy: camera=(), microphone=(), geolocation=()
   `,
 };
 

@@ -1,0 +1,22 @@
+JeffPixel additions and modifications
+Copyright 2026 Rayme and JeffPixel contributors
+
+All independently authored JeffPixel source code, tests, documentation,
+deployment configuration and the independently created jeffpixel-logo.png,
+and all copyrightable JeffPixel modifications to upstream files, are licensed
+under the GNU Affero General Public License, version 3 only (AGPL-3.0-only).
+The complete license is provided in LICENSES/AGPL-3.0.txt.
+
+This notice supplements the preserved upstream LICENSE. It does not replace
+or relicense Squoosh-derived, VeryPixel-owned or third-party material.
+Upstream Apache-2.0, AGPL-3.0-only and component-specific notices remain in force.
+See LICENSE, NOTICE, LICENSES/, FORK_NOTICE and MODIFICATIONS.md.
+
+You may redistribute and/or modify the covered software under the applicable
+license terms. It is distributed without warranty; see the complete license.
+For modified versions made available over a network, provide users access to
+the Corresponding Source as required by AGPL section 13 and applicable
+conveying provisions.
+
+Corresponding source: https://github.com/Rayme/JeffPixel
+Upstream: https://github.com/very-jack/VeryPixel

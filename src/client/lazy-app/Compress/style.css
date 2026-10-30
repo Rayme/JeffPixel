@@ -1,4 +1,5 @@
 /* Derived from Squoosh and substantially modified by VeryPixel in 2026. */
+/* Modified by JeffPixel on 2026-10-30: export-name controls and previews. */
 .workspace {
   height: 100%;
   overflow: auto;
@@ -47,7 +48,7 @@ input {
   height: 30px;
   flex: none;
   object-fit: contain;
-  transform: scale(1.85);
+  transform: none;
 }
 .progress-text {
   display: flex;
@@ -91,6 +92,58 @@ input {
 .download-all:disabled {
   opacity: 0.35;
   cursor: default;
+}
+
+.naming-panel {
+  min-width: 0;
+}
+.naming-fields {
+  padding: 0 20px;
+  display: grid;
+  gap: 12px;
+}
+.naming-fields label {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+.naming-fields input,
+.naming-fields select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  color: var(--ink);
+  background: #fff;
+}
+.naming-fields input:focus,
+.naming-fields select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.naming-numbers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.naming-note {
+  margin: 12px 20px 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.naming-note[role='alert'] {
+  color: #a02d37;
+}
+.item-copy .output-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--accent-deep);
 }
 
 .layout {

@@ -1,0 +1,31 @@
+JeffPixel
+Copyright 2026 Rayme and JeffPixel contributors
+https://github.com/Rayme/JeffPixel
+
+JeffPixel is an independently maintained derivative of VeryPixel:
+https://github.com/very-jack/VeryPixel
+Copyright 2026 阿杰 and VeryPixel contributors
+Fork base: 90ed901fd4378dbc230264495d7eecee62a04883
+
+VeryPixel is derived from Squoosh:
+https://github.com/GoogleChromeLabs/squoosh
+Copyright 2020 Google Inc.
+
+The upstream LICENSE and NOTICE are preserved unchanged. Squoosh-derived code
+remains Apache-2.0; VeryPixel-owned additions and modifications remain
+AGPL-3.0-only; third-party components retain their original licenses.
+JeffPixel-owned additions and copyrightable modifications are AGPL-3.0-only.
+See FORK_LICENSE and MODIFICATIONS.md for the new changes and their scope.
+
+JeffPixel uses an independently created name and icon. The VeryPixel name,
+logo and brand assets are reserved by their owner and are mentioned solely
+for attribution and identification of the upstream project. The upstream
+logo is absent from the current source tree and production assets; it may
+remain in inherited Git history as part of the original upstream repository.
+
+JeffPixel is maintained independently of VeryPixel, 阿杰, Google, Chrome and
+the Squoosh maintainers. References to these names identify software origins.
+
+This software is based in part on the work of the Independent JPEG Group.
+Third-party notices and licenses remain available in the source tree and
+in the production site's /licenses/ and /open-source/ pages.

@@ -1,9 +1,17 @@
 // Derived from Squoosh and substantially modified by VeryPixel in 2026.
 // See LICENSE, NOTICE, and MODIFICATIONS.md.
+// Modified by JeffPixel on 2026-10-30: independent branding and configurable export names.
 import { h, Component } from 'preact';
 import type SnackBarElement from 'shared/custom-els/snack-bar';
 import { zipSync } from 'fflate';
-import logo from 'url:static-build/assets/verypixel-logo.webp';
+import logo from 'url:static-build/assets/jeffpixel-logo.png';
+import { brandName, sourceRepositoryUrl } from 'shared/brand';
+import {
+  buildOutputNames,
+  defaultNamingSettings,
+  NamingSettings,
+  namingError,
+} from './filenames';
 import { builtinDecode } from '../util';
 import { encoderMap, EncoderState, EncoderType } from '../feature-meta';
 import WorkerBridge from '../worker-bridge';
@@ -77,16 +85,11 @@ interface State {
   processing: boolean;
   packing: boolean;
   encoderSupport: Partial<Record<AllowedEncoder, boolean>>;
+  naming: NamingSettings;
 }
 
 function createItem(file: File): BatchItem {
   return { file, originalUrl: URL.createObjectURL(file), status: 'waiting' };
-}
-
-function outputName(name: string, extension: string): string {
-  const dot = name.lastIndexOf('.');
-  const base = dot > 0 ? name.slice(0, dot) : name;
-  return `${base}_VeryPixel.${extension}`;
 }
 
 function containSize(
@@ -131,6 +134,7 @@ export default class Compress extends Component<Props, State> {
       processing: false,
       packing: false,
       encoderSupport: {},
+      naming: { ...defaultNamingSettings },
     };
   }
 
@@ -238,7 +242,10 @@ export default class Compress extends Component<Props, State> {
         if (signal.aborted) return;
         const output = new File(
           [bytes],
-          outputName(item.file.name, encoder.meta.extension),
+          buildOutputNames(
+            [{ name: item.file.name, extension: encoder.meta.extension }],
+            defaultNamingSettings,
+          )[0],
           { type: encoder.meta.mimeType },
         );
         const outputUrl = URL.createObjectURL(output);
@@ -429,40 +436,61 @@ export default class Compress extends Component<Props, State> {
     this.props.onClear();
   };
 
-  private download = (item: BatchItem) => {
+  private outputNames = (): string[] => {
+    const fallbackExtension =
+      encoderMap[this.state.encoderState.type].meta.extension;
+    return buildOutputNames(
+      this.state.items.map((item) => ({
+        name: item.file.name,
+        extension: item.output
+          ? item.output.name.slice(item.output.name.lastIndexOf('.') + 1)
+          : fallbackExtension,
+      })),
+      this.state.naming,
+    );
+  };
+
+  private changeNaming = <K extends keyof NamingSettings>(
+    key: K,
+    value: NamingSettings[K],
+  ) => {
+    // Naming is an export operation: existing image bytes and previews stay intact.
+    this.setState((state) => ({ naming: { ...state.naming, [key]: value } }));
+  };
+
+  private download = (item: BatchItem, name: string) => {
     if (!item.output || !item.outputUrl) return;
     const link = document.createElement('a');
     link.href = item.outputUrl;
-    link.download = item.output.name;
+    link.download = name;
     link.click();
   };
 
   private downloadAll = async () => {
+    if (
+      this.state.processing ||
+      this.state.packing ||
+      namingError(this.state.naming)
+    )
+      return;
+    const names = this.outputNames();
+    const nameByItem = new Map(
+      this.state.items.map((item, index) => [item, names[index]]),
+    );
     const done = this.state.items.filter((item) => item.status === 'done');
     if (done.length === 0) return;
     if (done.length === 1) {
-      this.download(done[0]);
+      this.download(done[0], nameByItem.get(done[0])!);
       return;
     }
 
     this.setState({ packing: true });
     try {
-      const entries: Record<string, Uint8Array> = {};
-      const usedNames = new Set<string>();
+      const entries: Record<string, Uint8Array> = Object.create(null);
 
       for (const item of done) {
         if (!item.output) continue;
-        const dot = item.output.name.lastIndexOf('.');
-        const base =
-          dot > 0 ? item.output.name.slice(0, dot) : item.output.name;
-        const extension = dot > 0 ? item.output.name.slice(dot) : '';
-        let entryName = item.output.name;
-        let copy = 2;
-        while (usedNames.has(entryName)) {
-          entryName = `${base} (${copy})${extension}`;
-          copy++;
-        }
-        usedNames.add(entryName);
+        const entryName = nameByItem.get(item)!;
         entries[entryName] = new Uint8Array(await item.output.arrayBuffer());
       }
 
@@ -474,7 +502,7 @@ export default class Compress extends Component<Props, State> {
       );
       const link = document.createElement('a');
       link.href = archiveUrl;
-      link.download = 'VeryPixel_images.zip';
+      link.download = 'JeffPixel_images.zip';
       link.click();
       self.setTimeout(() => URL.revokeObjectURL(archiveUrl), 1000);
     } catch (error) {
@@ -498,7 +526,10 @@ export default class Compress extends Component<Props, State> {
       processing,
       packing,
       encoderSupport,
+      naming,
     } = this.state;
+    const outputNames = this.outputNames();
+    const nameError = namingError(naming);
     const active = items[selected];
     const rawQuality = (encoderState.options as any).quality;
     const quality = Math.round(rawQuality || 0);
@@ -528,7 +559,7 @@ export default class Compress extends Component<Props, State> {
       <main class={style.workspace}>
         <header class={style.header}>
           <button class={style.brand} onClick={this.props.onBack}>
-            <img src={logo} alt="" /> VeryPixel
+            <img src={logo} alt="" /> {brandName}
           </button>
           <div class={style.progressText}>
             <i class={processing ? style.pulse : ''} />
@@ -538,7 +569,7 @@ export default class Compress extends Component<Props, State> {
           </div>
           <button
             class={style.downloadAll}
-            disabled={processing || packing || completed === 0}
+            disabled={processing || packing || completed === 0 || !!nameError}
             onClick={this.downloadAll}
           >
             {packing ? '正在打包…' : completed > 1 ? '下载 ZIP' : '下载图片'}{' '}
@@ -588,6 +619,9 @@ export default class Compress extends Component<Props, State> {
                   <img src={item.originalUrl} alt="" />
                   <span class={style.itemCopy}>
                     <strong>{item.file.name}</strong>
+                    <small class={style.outputName} title={outputNames[index]}>
+                      → {outputNames[index]}
+                    </small>
                     <small>
                       {item.width
                         ? `${item.width} × ${item.height}`
@@ -843,6 +877,178 @@ export default class Compress extends Component<Props, State> {
               图片会缩小至边界框内，不裁切、不拉伸，也不会放大小图。
             </p>
             <div class={style.settingDivider} />
+            <section class={style.namingPanel} aria-label="下载命名">
+              <label class={style.field}>
+                <span>下载命名</span>
+                <select
+                  aria-label="下载命名"
+                  value={naming.mode}
+                  disabled={packing}
+                  onChange={(event) =>
+                    this.changeNaming(
+                      'mode',
+                      (event.currentTarget as HTMLSelectElement)
+                        .value as NamingSettings['mode'],
+                    )
+                  }
+                >
+                  <option value="original">保持原文件名</option>
+                  <option value="affix">添加前缀 / 后缀</option>
+                  <option value="sequence">统一名称 + 序号</option>
+                  <option value="replace">查找替换</option>
+                </select>
+              </label>
+              {naming.mode === 'affix' && (
+                <div class={style.namingFields}>
+                  <label>
+                    前缀
+                    <input
+                      aria-label="文件名前缀"
+                      type="text"
+                      value={naming.prefix}
+                      maxLength={120}
+                      disabled={packing}
+                      placeholder="例如：旅行_"
+                      onInput={(event) =>
+                        this.changeNaming(
+                          'prefix',
+                          (event.currentTarget as HTMLInputElement).value,
+                        )
+                      }
+                    />
+                  </label>
+                  <label>
+                    后缀
+                    <input
+                      aria-label="文件名后缀"
+                      type="text"
+                      value={naming.suffix}
+                      maxLength={120}
+                      disabled={packing}
+                      placeholder="例如：_精选"
+                      onInput={(event) =>
+                        this.changeNaming(
+                          'suffix',
+                          (event.currentTarget as HTMLInputElement).value,
+                        )
+                      }
+                    />
+                  </label>
+                </div>
+              )}
+              {naming.mode === 'sequence' && (
+                <div class={style.namingFields}>
+                  <label>
+                    统一名称
+                    <input
+                      aria-label="统一名称"
+                      type="text"
+                      value={naming.sequenceName}
+                      maxLength={120}
+                      disabled={packing}
+                      placeholder="例如：旅行"
+                      onInput={(event) =>
+                        this.changeNaming(
+                          'sequenceName',
+                          (event.currentTarget as HTMLInputElement).value,
+                        )
+                      }
+                    />
+                  </label>
+                  <div class={style.namingNumbers}>
+                    <label>
+                      起始序号
+                      <input
+                        aria-label="起始序号"
+                        type="number"
+                        min="0"
+                        max="999999999"
+                        step="1"
+                        value={naming.startAt}
+                        disabled={packing}
+                        onInput={(event) =>
+                          this.changeNaming(
+                            'startAt',
+                            (event.currentTarget as HTMLInputElement).value,
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      最少位数
+                      <select
+                        aria-label="序号最少位数"
+                        value={naming.padding}
+                        disabled={packing}
+                        onChange={(event) =>
+                          this.changeNaming(
+                            'padding',
+                            Number(
+                              (event.currentTarget as HTMLSelectElement).value,
+                            ),
+                          )
+                        }
+                      >
+                        {[1, 2, 3, 4, 5, 6].map((digits) => (
+                          <option value={digits}>{digits} 位</option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
+                </div>
+              )}
+              {naming.mode === 'replace' && (
+                <div class={style.namingFields}>
+                  <label>
+                    查找
+                    <input
+                      aria-label="查找文件名文字"
+                      type="text"
+                      value={naming.find}
+                      maxLength={120}
+                      disabled={packing}
+                      placeholder="例如：IMG_"
+                      onInput={(event) =>
+                        this.changeNaming(
+                          'find',
+                          (event.currentTarget as HTMLInputElement).value,
+                        )
+                      }
+                    />
+                  </label>
+                  <label>
+                    替换为
+                    <input
+                      aria-label="文件名替换为"
+                      type="text"
+                      value={naming.replacement}
+                      maxLength={120}
+                      disabled={packing}
+                      placeholder="留空可删除匹配文字"
+                      onInput={(event) =>
+                        this.changeNaming(
+                          'replacement',
+                          (event.currentTarget as HTMLInputElement).value,
+                        )
+                      }
+                    />
+                  </label>
+                </div>
+              )}
+              <p
+                class={style.namingNote}
+                role={nameError ? 'alert' : undefined}
+              >
+                {nameError ||
+                  (naming.mode === 'replace'
+                    ? '区分大小写，替换全部匹配文字；扩展名按输出格式设置。'
+                    : '序号按左侧队列排列；重名自动加编号。')}
+              </p>
+              <p class={style.namingNote}>
+                在左侧预览导出名。修改命名即时生效，复用已有压缩结果。
+              </p>
+            </section>
+            <div class={style.settingDivider} />
             <div class={style.batchSummary}>
               <span>
                 <small>文件</small>
@@ -870,14 +1076,14 @@ export default class Compress extends Component<Props, State> {
               <p>
                 <strong>本地处理</strong>
                 <small>所有图片只停留在此设备</small>
+                <small>压缩导出会移除照片元信息</small>
               </p>
             </div>
             <nav class={style.legalLinks}>
               <a href="/privacy/">隐私</a>
               <a href="/terms/">条款</a>
               <a href="/open-source/">源码许可</a>
-              <a href="https://github.com/very-jack/VeryPixel">GitHub</a>
-              <a href="https://veryjack.com">VeryJack 博客</a>
+              <a href={sourceRepositoryUrl}>本版源码</a>
             </nav>
           </aside>
         </section>

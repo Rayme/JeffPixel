@@ -1,3 +1,4 @@
+# Modified by JeffPixel on 2026-10-30: naming tests and distribution-license checks.
 name: Build
 
 on:
@@ -21,6 +22,10 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
+      - name: Test output names
+        run: npm test
       - name: Build production assets
-        run: npm run build
+        run: npm run build:prod
+      - name: Check distribution licenses and fork identity
+        run: npm run check:compliance

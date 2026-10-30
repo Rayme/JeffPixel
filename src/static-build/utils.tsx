@@ -1,4 +1,5 @@
 // Modified by the VeryPixel project in 2026; see MODIFICATIONS.md.
+// Modified by JeffPixel on 2026-10-30: fork identity and exact-version source URL.
 /**
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -69,7 +70,9 @@ export const siteOrigin = (() => {
   return 'http://localhost:5000';
 })();
 
-export const legalOperator = process.env.LEGAL_ENTITY || '阿杰';
-export const privacyEmail = process.env.PRIVACY_EMAIL || 'jack@veryjack.com';
+export const legalOperator = process.env.LEGAL_ENTITY || 'Rayme（个人维护）';
 export const sourceRepositoryUrl =
-  process.env.SOURCE_REPOSITORY_URL || 'https://github.com/very-jack/VeryPixel';
+  process.env.SOURCE_REPOSITORY_URL || 'https://github.com/Rayme/JeffPixel';
+export const sourceVersionUrl = process.env.SOURCE_COMMIT
+  ? `${sourceRepositoryUrl}/tree/${process.env.SOURCE_COMMIT}`
+  : sourceRepositoryUrl;
